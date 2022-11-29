@@ -10,24 +10,27 @@ jobs:
         fetch-depth: 0
         submodules: true
 
-    - name: Build x64
-      run: |
-        cd resvg\c-api && cargo +stable-x86_64-pc-windows-msvc build --release --target-dir x64
-
-    - name: Build x86
+    - name: Build Win32
       run: |
         rustup toolchain install stable-i686-pc-windows-msvc
         cd resvg\c-api && cargo +stable-i686-pc-windows-msvc build --release --target-dir Win32
 
+    - name: Build x64
+      run: |
+        cd resvg\c-api && cargo +stable-x86_64-pc-windows-msvc build --release --target-dir x64
+
     - name: Copy files
       run: |
-        mkdir lib
-        copy resvg\c-api\resvg.h lib
-        copy resvg\c-api\x64\release\resvg.lib lib\resvg-x64.lib
-        copy resvg\c-api\Win32\release\resvg.lib lib\resvg-Win32.lib
+        mkdir upload
+        mkdir upload\resvg
+        mkdir upload\Win32
+        mkdir upload\x64
+        copy resvg\c-api\resvg.h upload\resvg
+        copy resvg\c-api\Win32\release\resvg.lib upload\Win32
+        copy resvg\c-api\x64\release\resvg.lib upload\x64
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: resvg-lib
-        path: lib
+        path: upload
