@@ -11,13 +11,15 @@ jobs:
         submodules: true
 
     - name: Build Win32
+      working-directory: resvg/c-api
       run: |
         rustup toolchain install stable-i686-pc-windows-msvc
-        cd resvg\c-api && cargo +stable-i686-pc-windows-msvc build --release --target-dir Win32
+        cargo +stable-i686-pc-windows-msvc build --release --target-dir Win32
 
     - name: Build x64
+      working-directory: resvg/c-api
       run: |
-        cd resvg\c-api && cargo +stable-x86_64-pc-windows-msvc build --release --target-dir x64
+        cargo build --release --target-dir x64
 
     - name: Copy files
       run: |
