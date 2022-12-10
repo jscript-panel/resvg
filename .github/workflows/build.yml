@@ -24,10 +24,9 @@ jobs:
     - name: Copy files
       run: |
         mkdir upload
-        mkdir upload\resvg
         mkdir upload\Win32
         mkdir upload\x64
-        copy resvg\c-api\resvg.h upload\resvg
+        copy resvg\c-api\resvg.h upload
         copy resvg\c-api\Win32\release\resvg.lib upload\Win32
         copy resvg\c-api\x64\release\resvg.lib upload\x64
 
