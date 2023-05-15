@@ -1,0 +1,37 @@
+name: build
+on: push
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Build Win32
+      working-directory: resvg/crates/c-api
+      run: |
+        rustup toolchain install stable-i686-pc-windows-msvc
+        cargo +stable-i686-pc-windows-msvc build --release --target-dir Win32
+
+    - name: Build x64
+      working-directory: resvg/crates/c-api
+      run: |
+        cargo build --release --target-dir x64
+
+    - name: Copy files
+      run: |
+        mkdir upload
+        mkdir upload\Win32
+        mkdir upload\x64
+        copy resvg\crates\c-api\resvg.h upload
+        copy resvg\crates\c-api\Win32\release\resvg.lib upload\Win32
+        copy resvg\crates\c-api\x64\release\resvg.lib upload\x64
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: resvg-lib
+        path: upload
