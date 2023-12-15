@@ -30,7 +30,7 @@ jobs:
         copy resvg\crates\c-api\x64\release\resvg.lib upload\x64
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: resvg-lib
         path: upload
